@@ -1,4 +1,4 @@
-/*
+    /*
  *	An Arduino library for the Hi-Link LD2450 24Ghz FMCW radar sensor.
  *
  *  This sensor is a Frequency Modulated Continuous Wave radar, which makes it good for presence detection and its sensitivity at different ranges to both static and moving targets can be configured.
@@ -11,9 +11,6 @@
  */
 #ifndef LD2450_h
 #define LD2450_h
-
-
-
 
 #include <Arduino.h>
 
@@ -32,9 +29,6 @@
 #define LD2450_DEFAULT_RETRY_COUNT_FOR_WAIT_FOR_MSG 1000
 
 
-
-
-
 class LD2450
 {
 
@@ -48,10 +42,14 @@ public:
         uint16_t resolution; // mm
         uint16_t distance; // mm calculated from  x y 
         bool valid;
+
+        int16_t xmin = 16383;
+        int16_t xmax = -16384;
+        int16_t ymin = 16383;
+        int16_t ymax = -16384;
     } RadarTarget_t;
 
     LD2450();
-    // Constructor function
     ~LD2450();
 
     void begin(Stream &radarStream);
@@ -63,11 +61,11 @@ public:
 
     bool waitForSensorMessage(bool wait_forever = false);
     void setNumberOfTargets(uint16_t _numTargets);
-    int ProcessSerialDataIntoRadarData(byte rec_buf[], int len);
+    uint8_t ProcessSerialDataIntoRadarData(byte rec_buf[], int len);
     RadarTarget getTarget(uint16_t _target_id);
     uint16_t getSensorSupportedTargetCount();
     String getLastTargetMessage();
-    int read();
+    uint8_t read();
 
 protected:
 
